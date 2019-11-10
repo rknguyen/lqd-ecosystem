@@ -1,0 +1,7 @@
+{
+  "extends": "my-awesome-tsconfig",
+  "compilerOptions": {
+    "outDir": "lib"
+  },
+  "include": ["src"]
+}
