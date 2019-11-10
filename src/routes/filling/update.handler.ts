@@ -56,7 +56,6 @@ async function Handler(req: any, res: any) {
     await Filling.updateOne(fillingCond, updRow)
   }
   catch(err) {
-    console.log(err)
     return res.json(
       (new RKError('Đã có lỗi xảy ra', err)).toJSON()
     )

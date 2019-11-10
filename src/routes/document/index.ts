@@ -2,7 +2,9 @@ import { Router } from 'express'
 const formidable = require('express-formidable')
 
 import Validator from '../../utils/validator'
+
 import MustLogined from '../../middleware/authorize'
+import MustBeAdmin from '../../middleware/admin'
 
 import CreateDocumentHandler from './create.handler'
 import CreateDocumentSchema from './create.schema'
@@ -17,7 +19,7 @@ const Document = Router()
 
 // setting up document routes here
 Document.get('/', MustLogined, Validator(GetDocumentSchema), GetDocumentHandler)
-Document.post('/create', MustLogined, formidable(), Validator(CreateDocumentSchema), CreateDocumentHandler)
-Document.post('/delete', MustLogined, Validator(DeleteDocumentSchema), DeleteDocumentHandler)
+Document.post('/create', MustLogined, MustBeAdmin, formidable(), Validator(CreateDocumentSchema), CreateDocumentHandler)
+Document.post('/delete', MustLogined, MustBeAdmin, Validator(DeleteDocumentSchema), DeleteDocumentHandler)
 
 export default Document

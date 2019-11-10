@@ -2,6 +2,7 @@ import isObjectID from '../../utils/objectid'
 import { RKError, RKSuccess } from '../../utils/response'
 
 import Filling from '../../models/Filling'
+import Admin from '../../models/Admin'
 
 async function Handler(req: any, res: any) {
   const { fillingID } = req.all
@@ -23,7 +24,11 @@ async function Handler(req: any, res: any) {
     }
 
     const { ownerID } = filling
-    if (ownerID !== req.user._id.toString()) {
+    const adminCond = { userID: req.user._id }
+    const admin = await Admin.findOne(adminCond)
+
+    // admin can delete any filling
+    if (admin === null && ownerID !== req.user._id.toString()) {
       return res.json(
         (new RKError('Bạn không có quyền xoá bản ghi này')).toJSON()
       )
