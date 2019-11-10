@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import { RKError, RKSuccess } from '../../utils/response'
+import { RKError } from '../../utils/response'
 import isObjectID from '../../utils/objectid'
 
 import Document from '../../models/Document'
