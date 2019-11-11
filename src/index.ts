@@ -12,6 +12,8 @@ import MongoDBInterface from '@accounts/mongo'
 
 import SetupRoute from './routes'
 
+import Admin from './models/Admin'
+
 const app : express.Application = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -39,8 +41,16 @@ app.use(userLoader(accountsServer))
 // setting up routes
 SetupRoute(app)
 
-app.get('/user', userLoader(accountsServer), (req: express.Request, res: express.Response) => {
-  res.json({ user: (req as any).user })
+app.get('/user', userLoader(accountsServer), async (req: express.Request, res: express.Response) => {
+  const adminCond = { userID: (req as any).user._id }
+  const admin = await Admin.findOne(adminCond)
+  
+  res.json({ 
+    user: {
+      ...(req as any).user,
+      isAdmin: (admin !== null)
+    },
+  })
 })
 
 app.listen(4000, () => {
