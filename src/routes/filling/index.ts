@@ -15,10 +15,14 @@ import UpdateFillingSchema from './update.schema'
 import GetFillingHandler from './get.handler'
 import GetFillingSchema from './get.schema'
 
+import GetByDocumentIDHandler from './getByDocumentID.handler'
+import GetByDocumentIDSchema from './getByDocumentID.schema'
+
 const Filling = Router()
 
 // setting up document routes here
 Filling.get('/', MustLogined, Validator(GetFillingSchema), GetFillingHandler)
+Filling.get('/getByDocumentID', MustLogined, Validator(GetByDocumentIDSchema), GetByDocumentIDHandler)
 Filling.post('/create', MustLogined, Validator(CreateFillingSchema), CreateFillingHandler)
 Filling.post('/update', MustLogined, Validator(UpdateFillingSchema), UpdateFillingHandler)
 Filling.post('/delete', MustLogined, Validator(DeleteFillingSchema), DeleteFillingHandler)
