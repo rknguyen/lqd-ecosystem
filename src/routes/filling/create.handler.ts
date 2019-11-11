@@ -16,6 +16,18 @@ async function Handler(req: any, res: any) {
     )
   }
 
+  // only accept filling once 
+  const fillingCond = {
+    ownerID: req.user._id,
+    documentID: documentID
+  }
+  const tmpFilling = await Filling.findOne(fillingCond)
+  if (tmpFilling !== null) {
+    return res.json(
+      (new RKError('Bạn đã điền rồi, hãy cập nhật thay vì điền lại')).toJSON()
+    )
+  }
+
   // check field is valid or not
   const fieldSchema = {
     value: { 
