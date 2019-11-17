@@ -1,58 +1,60 @@
-import express from 'express'
-import cors from 'cors'
+import express from "express";
+import cors from "cors";
 
-import * as bodyParser from 'body-parser'
+import * as bodyParser from "body-parser";
 
-import { AccountsPassword } from '@accounts/password'
-import { AccountsServer } from '@accounts/server'
-import accountsExpress, { userLoader } from '@accounts/rest-express'
+import { AccountsPassword } from "@accounts/password";
+import { AccountsServer } from "@accounts/server";
+import accountsExpress, { userLoader } from "@accounts/rest-express";
 
-import db from './db'
-import MongoDBInterface from '@accounts/mongo'
+import db from "./db";
+import MongoDBInterface from "@accounts/mongo";
 
-import SetupRoute from './routes'
+import SetupRoute from "./routes";
 
-import Admin from './models/Admin'
+import Admin from "./models/Admin";
 
-const app : express.Application = express()
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(cors())
+const app: express.Application = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
 const accountsPassword = new AccountsPassword({
   validateNewUser: user => {
     return user;
-  },
-})
+  }
+});
 
 const accountsServer = new AccountsServer(
   {
     db: new MongoDBInterface(db.connection),
-    tokenSecret: 'rknguyen',
+    tokenSecret: "rknguyen"
   },
   {
-    password: accountsPassword,
+    password: accountsPassword
   }
-)
+);
 
-app.use(accountsExpress(accountsServer))
-app.use(userLoader(accountsServer))
+app.post(
+  "/accounts/user",
+  userLoader(accountsServer),
+  async (req: express.Request, res: express.Response) => {
+    const adminCond = { userID: (req as any).user._id };
+    const admin = await Admin.findOne(adminCond);
+
+    res.json({
+      ...(req as any).user,
+      isAdmin: admin !== null
+    });
+  }
+);
+
+app.use(accountsExpress(accountsServer));
+app.use(userLoader(accountsServer));
 
 // setting up routes
-SetupRoute(app)
-
-app.get('/user', userLoader(accountsServer), async (req: express.Request, res: express.Response) => {
-  const adminCond = { userID: (req as any).user._id }
-  const admin = await Admin.findOne(adminCond)
-  
-  res.json({ 
-    user: {
-      ...(req as any).user,
-      isAdmin: (admin !== null)
-    },
-  })
-})
+SetupRoute(app);
 
 app.listen(4000, () => {
-  console.log('Server listening on port 4000')
-})
+  console.log("Server listening on port 4000");
+});
