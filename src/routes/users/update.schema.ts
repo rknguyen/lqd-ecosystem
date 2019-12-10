@@ -1,10 +1,6 @@
 export default {
   on: ["body"],
   schema: {
-    userId: {
-      type: String,
-      required: true
-    },
     dob: {
       type: String,
       required: true
