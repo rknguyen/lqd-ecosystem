@@ -17,7 +17,12 @@ import Admin from "./models/Admin";
 const app: express.Application = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    credentials: true
+  })
+);
 
 const accountsPassword = new AccountsPassword({
   validateNewUser: user => {
