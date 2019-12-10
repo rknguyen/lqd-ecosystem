@@ -17,12 +17,7 @@ import Admin from "./models/Admin";
 const app: express.Application = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(
-  cors({
-    origin: "*",
-    credentials: true
-  })
-);
+app.use(cors());
 
 const accountsPassword = new AccountsPassword({
   validateNewUser: user => {
@@ -43,7 +38,9 @@ const accountsServer = new AccountsServer(
 app.post(
   "/accounts/user",
   userLoader(accountsServer),
-  async (req: express.Request, res: express.Response) => {
+  async (req: any, res: any) => {
+    if (!req.user) return res.json({ success: true });
+
     const adminCond = { userID: (req as any).user._id };
     const admin = await Admin.findOne(adminCond);
 
