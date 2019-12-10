@@ -13,6 +13,13 @@ async function Handler(req: any, res: any) {
     const information = await Informations.findOne({ userId });
     if (information !== null) {
       checkin.information = information.toObject();
+    } else {
+      checkin.information = {
+        dob: null,
+        name: null,
+        class: null,
+        schoolYear: null
+      };
     }
 
     CheckInList.push(checkin);
