@@ -29,7 +29,7 @@ async function Handler(req: any, res: any) {
     const user: any = await Information.findOne({ userId: ownerID });
     const docs: any = await Document.findOne({ _id: documentID });
     fill.ownerName = user ? user.name : null;
-    fill.docName = docs.name;
+    fill.docName = docs ? docs.name : null;
     fillingList.push(fill);
   }
   return res.json(
