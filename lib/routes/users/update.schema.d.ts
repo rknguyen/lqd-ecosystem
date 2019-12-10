@@ -1,6 +1,10 @@
 declare const _default: {
     on: string[];
     schema: {
+        userId: {
+            type: StringConstructor;
+            required: boolean;
+        };
         dob: {
             type: StringConstructor;
             required: boolean;
