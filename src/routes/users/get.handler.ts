@@ -12,6 +12,13 @@ async function Handler(req: any, res: any) {
     const information = await Informations.findOne({ userId });
     if (information !== null) {
       user.information = information.toObject();
+    } else {
+      user.information = {
+        dob: null,
+        name: null,
+        class: null,
+        schoolYear: null
+      };
     }
 
     delete user.services;
