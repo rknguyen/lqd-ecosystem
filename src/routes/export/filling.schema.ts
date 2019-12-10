@@ -1,9 +1,9 @@
 export default {
-  on: ['query'],
+  on: ["query"],
   schema: {
     fillingID: {
       type: String,
       required: true
     }
   }
-}
+};
