@@ -1,17 +1,20 @@
 declare const _default: {
-    name: {
-        type: StringConstructor;
-        length: {
-            min: number;
+    on: string[];
+    schema: {
+        name: {
+            type: StringConstructor;
+            length: {
+                min: number;
+            };
+            required: boolean;
         };
-        required: boolean;
-    };
-    fields: {
-        type: ArrayConstructor;
-        required: boolean;
-    };
-    document: {
-        required: boolean;
+        fields: {
+            type: ArrayConstructor;
+            required: boolean;
+        };
+        attachment: {
+            required: boolean;
+        };
     };
 };
 export default _default;
