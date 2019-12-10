@@ -16,9 +16,12 @@ import RemoveAdminSchema from "./removeAdmin.schema";
 import UpdateUserInformationHandler from "./update.handler";
 import UpdateUserInformationSchema from "./update.schema";
 
+import GetUserHandler from "./get.handler";
+
 const Users = Router();
 
 // setting up document routes here
+Users.get("/", GetUserHandler);
 Users.post(
   "/update",
   MustLogined,
@@ -35,7 +38,6 @@ Users.post(
 Users.post(
   "/setAdmin",
   MustLogined,
-  MustBeAdmin,
   Validator(SetAdminSchema),
   SetAdminHandler
 );

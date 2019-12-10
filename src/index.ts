@@ -13,6 +13,7 @@ import MongoDBInterface from "@accounts/mongo";
 import SetupRoute from "./routes";
 
 import Admin from "./models/Admin";
+import Informations from "./models/Information";
 
 const app: express.Application = express();
 app.use(bodyParser.json());
@@ -43,10 +44,14 @@ app.post(
 
     const adminCond = { userID: (req as any).user._id };
     const admin = await Admin.findOne(adminCond);
+    const information = await Informations.findOne({
+      userId: (req as any).user._id
+    });
 
     res.json({
       ...(req as any).user,
-      isAdmin: admin !== null
+      isAdmin: admin !== null,
+      information
     });
   }
 );
