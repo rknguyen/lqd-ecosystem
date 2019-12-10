@@ -28,7 +28,7 @@ async function Handler(req: any, res: any) {
     const { ownerID, documentID } = fill;
     const user: any = await Information.findOne({ userId: ownerID });
     const docs: any = await Document.findOne({ _id: documentID });
-    fill.ownerName = user.name;
+    fill.ownerName = user ? user.name : null;
     fill.docName = docs.name;
     fillingList.push(fill);
   }
